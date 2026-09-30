@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
+  <title>Rishi Music</title>
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="./manifest.json" />
+
+  <!-- Theme color -->
+  <meta name="theme-color" content="#0F0F0F" />
+
+  <!-- Apple / iOS PWA support -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Rishi Music" />
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- =====================================================
+         SIDEBAR / TOP BAR
+         ===================================================== -->
+    <aside class="sidebar">
+
+      <div class="brand">
+        <h1>♫ RISHI MUSIC</h1>
+        <p>Personal Audio Station</p>
+      </div>
+
+      <!-- Import Track -->
+      <label class="btn-import">
+        + Import Track
+
+        <input
+          type="file"
+          id="audioFileInput"
+          accept="audio/*"
+          multiple
+        />
+      </label>
+
+      <!-- Playlist / Artist Filter -->
+      <div class="filter-group">
+
+        <label for="directorFilter">
+          PLAYLIST / ARTIST
+        </label>
+
+        <select id="directorFilter">
+          <option value="All">All</option>
+        </select>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN LIST VIEW
+         ===================================================== -->
+    <main class="main-content">
+
+      <header class="top-nav">
+
+        <h2 id="viewTitle">
+          All Songs
+        </h2>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="🔍 Search song name..."
+          autocomplete="off"
+        />
+
+      </header>
+
+
+      <!-- Song list -->
+      <section
+        class="song-list"
+        id="songListContainer"
+      ></section>
+
+    </main>
+
+
+    <!-- =====================================================
+         PERSISTENT BOTTOM AUDIO PLAYER
+         ===================================================== -->
+    <footer class="player-bar">
+
+      <!-- Current song information -->
+      <div class="meta-box">
+
+        <div
+          class="track-title"
+          id="playerTitle"
+        >
+          No track playing
+        </div>
+
+        <div
+          class="track-artist"
+          id="playerArtist"
+        >
+          Select a song from your library
+        </div>
+
+      </div>
+
+
+      <!-- Player controls -->
+      <div class="controls-box">
+
+        <button
+          id="prevBtn"
+          class="control-btn"
+          aria-label="Previous"
+          type="button"
+        >
+          ⏮
+        </button>
+
+        <button
+          id="playBtn"
+          class="control-btn primary"
+          aria-label="Play"
+          type="button"
+        >
+          ▶
+        </button>
+
+        <button
+          id="nextBtn"
+          class="control-btn"
+          aria-label="Next"
+          type="button"
+        >
+          ⏭
+        </button>
+
+      </div>
+
+
+      <!-- Progress bar -->
+      <div class="slider-box">
+
+        <span id="currentTime">
+          0:00
+        </span>
+
+        <input
+          type="range"
+          id="progressBar"
+          min="0"
+          max="100"
+          value="0"
+          step="0.1"
+          aria-label="Song progress"
+        />
+
+        <span id="totalTime">
+          0:00
+        </span>
+
+      </div>
+
+    </footer>
+
+  </div>
+
+
+  <!-- =====================================================
+       AUDIO ENGINE
+       ===================================================== -->
+
+  <audio
+    id="audioEngine"
+    preload="auto"
+    playsinline
+  ></audio>
+
+
+  <!-- =====================================================
+       MAIN APP JAVASCRIPT
+       ===================================================== -->
+
+  <script src="./app.js"></script>
+
+
+  <!-- =====================================================
+       SERVICE WORKER / PWA
+       ===================================================== -->
+
+  <script>
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener("load", function () {
+
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .then(function (registration) {
+
+            console.log(
+              "Rishi Music Service Worker registered:",
+              registration.scope
+            );
+
+          })
+          .catch(function (error) {
+
+            console.error(
+              "Rishi Music Service Worker registration failed:",
+              error
+            );
+
+          });
+
+      });
+
+    }
+  </script>
+
+</body>
+</html>
